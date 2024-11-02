@@ -5,12 +5,14 @@ import type { Product, CartItem } from '../types';
 interface CartStore {
   items: CartItem[];
   isOpen: boolean;
+  isProductOpen: boolean;
   authToken: string;
   manageAuthToken: () => void;
   addItem: (product: Product) => void;
   removeItem: (productId: number) => void;
   updateQuantity: (productId: number, quantity: number) => void;
   setIsCartOpen: (isOpen: boolean) => void;
+  setIsProductOpen: (isOpen: boolean) => void;
   clearCart: () => void;
 }
 
@@ -19,6 +21,7 @@ export const useCartStore = create<CartStore>()(
     (set) => ({
       items: [],
       isOpen: false,
+      isProductOpen: false,
       authToken: '',
       manageAuthToken: () => {
         const token = sessionStorage.getItem('authToken') || ''
@@ -26,7 +29,7 @@ export const useCartStore = create<CartStore>()(
           authToken: token,
         }))
       },
-      
+
       addItem: (product) =>
         set((state) => {
           const existingItem = state.items.find((item) => item.id === product.id);
@@ -59,6 +62,7 @@ export const useCartStore = create<CartStore>()(
           };
         }),
       setIsCartOpen: (isOpen) => set({ isOpen }),
+      setIsProductOpen: (isProductOpen) => set({ isProductOpen }),
       clearCart: () => set({ items: [] }),
     }),
     {
